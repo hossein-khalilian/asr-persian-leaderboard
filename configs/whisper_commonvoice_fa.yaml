@@ -1,0 +1,7 @@
+model_runner: run_whisper
+model_name: openai/whisper-small
+dataset: common_voice
+subset: fa
+split: test[:20]
+language: fa
+notes: "Zero-shot Persian"

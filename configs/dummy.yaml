@@ -1,0 +1,7 @@
+model_runner: run_dummy
+model_name: dummy model
+dataset: dummy_dataset
+subset: fa
+split: test[:20]
+language: fa
+notes: "Zero-shot Persian"
