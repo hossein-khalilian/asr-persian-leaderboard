@@ -9,6 +9,7 @@ def run_dummy(config):
         "CER (%)": 3.8,
         "Inference Time (s)": 0.75,
         "Dataset Used": "Common Voice (Persian)",
+        "Sample Size": 0,
         "# Params (M)": 244,
         "Hugging Face Link": "https://huggingface.co/dummy/model",
         "Last Updated": str(date.today()),

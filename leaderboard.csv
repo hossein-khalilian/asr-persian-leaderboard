@@ -1,2 +1,3 @@
-Rank,Model Name,WER (%),CER (%),Inference Time (s),Dataset Used,# Params (M),Hugging Face Link,Last Updated,Notes
-1,dummy_model,6.1,3.8,0.75,Common Voice (Persian),244,https://huggingface.co/dummy/model,2025-06-29,Zero-shot test run
+Rank,Model Name,WER (%),CER (%),Inference Time (s),Dataset Used,Sample Size,# Params (M),Hugging Face Link,Last Updated,Notes
+1,dummy_model,6.1,3.8,0.75,Common Voice (Persian),0,244.0,https://huggingface.co/dummy/model,2025-07-07,Zero-shot test run
+2,m3hrdadfi/wav2vec2-large-xlsr-persian-v3,26.11,6.45,23.71,hsekhalilian/commonvoice dev,1000,315.48,https://huggingface.co/m3hrdadfi/wav2vec2-large-xlsr-persian-v3,2025-07-07,mehrdad zeroshot model
