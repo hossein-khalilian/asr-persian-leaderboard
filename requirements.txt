@@ -1,0 +1,14 @@
+transformers
+datasets
+torchaudio
+torch
+librosa
+jiwer
+soundfile
+tqdm
+ipython
+soundfile
+
+num2fawords
+parsivar
+pandas 
