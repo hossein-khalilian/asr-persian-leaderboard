@@ -43,37 +43,40 @@ resampler = torchaudio.transforms.Resample(
 )
 
 
-def make_preprocess_fn(model, processor, resampler):
-    def preprocess(sample):
-        audio = sample["audio"]
+def preprocess(batch):
+    speech_arrays = []
+    for audio in batch["audio"]:
         speech_array, sampling_rate = audio["array"], audio["sampling_rate"]
         if sampling_rate != TARGET_SAMPLING_RATE:
             speech_array = resampler(torch.tensor(speech_array)).numpy()
+        speech_arrays.append(speech_array)
 
-        inputs = processor(
-            speech_array,
-            sampling_rate=TARGET_SAMPLING_RATE,
-            return_tensors="pt",
-            padding=True,
-        )
+    inputs = processor(
+        speech_arrays,
+        sampling_rate=TARGET_SAMPLING_RATE,
+        return_tensors="pt",
+        padding=True,
+    )
 
-        with torch.no_grad():
-            inputs = {k: v.to(DEVICE) for k, v in inputs.items()}
-            logits = model(**inputs).logits
-            predicted_ids = torch.argmax(logits, dim=-1)
-            transcription = processor.decode(predicted_ids[0])
+    with torch.no_grad():
+        inputs = {k: v.to(DEVICE) for k, v in inputs.items()}
+        logits = model(**inputs).logits
+        predicted_ids = torch.argmax(logits, dim=-1)
+        transcriptions = processor.batch_decode(predicted_ids)
 
-        return {"predicted": transcription, "reference": sample["sentence"]}
-
-    return preprocess
+    return {
+        "predicted": [t.lower() for t in transcriptions],
+        "reference": [s.lower() for s in batch["sentence"]],
+    }
 
 
 # --------------------- Run Batched Inference with map() ---------------------
 logger.info("Starting batched inference with Hugging Face `map()`...")
 start_time = time.time()
 
-preprocess_fn = make_preprocess_fn(model, processor, resampler)
-result_dataset = dataset.map(preprocess_fn, remove_columns=dataset.column_names)
+result_dataset = dataset.map(
+    preprocess, batched=True, batch_size=BATCH_SIZE, remove_columns=dataset.column_names
+)
 
 end_time = time.time()
 logger.info(f"Inference completed in {end_time - start_time:.2f} seconds.")
