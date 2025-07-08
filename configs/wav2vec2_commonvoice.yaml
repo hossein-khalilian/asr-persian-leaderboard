@@ -1,6 +1,6 @@
 model_runner: run_wav2vec2
-model_name: /home/user/.cache/models/m3hrdadfi/wav2vec2-large-xlsr-persian-v3/
+model_name: ghofrani/xls-r-1b-fa-cv8
 dataset: hsekhalilian/commonvoice
 split: dev
 notes: "mehrdad zeroshot model"
-sample_size: 5000
+sample_size: 1000
