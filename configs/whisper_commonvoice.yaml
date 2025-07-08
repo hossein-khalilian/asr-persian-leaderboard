@@ -1,0 +1,6 @@
+model_runner: run_whisper
+model_name: openai/whisper-large
+dataset: hsekhalilian/commonvoice
+split: dev
+language: persian
+sample_size: 1000
