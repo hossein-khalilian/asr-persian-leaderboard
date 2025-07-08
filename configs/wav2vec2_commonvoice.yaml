@@ -3,4 +3,4 @@ model_name: /home/user/.cache/models/m3hrdadfi/wav2vec2-large-xlsr-persian-v3/
 dataset: hsekhalilian/commonvoice
 split: dev
 notes: "mehrdad zeroshot model"
-sample_size: 1000
+sample_size: 5000
