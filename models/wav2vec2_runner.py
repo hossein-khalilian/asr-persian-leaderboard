@@ -29,6 +29,13 @@ def run_wav2vec2(config):
       - split (str): dataset split (e.g. "test[:20]")
       - language (str): language id for Wav2vec2
     """
+    if torch.cuda.is_available():
+        gpu_name = torch.cuda.get_device_name(0)
+        cuda_version = torch.version.cuda
+        hardware_info = f"{gpu_name} (CUDA {cuda_version})"
+    else:
+        hardware_info = "CPU only"
+
     TARGET_SAMPLING_RATE = 16000
 
     model_name_or_path = config["model_name"]
@@ -50,6 +57,7 @@ def run_wav2vec2(config):
     dataset = load_dataset(dataset_name, split=split)
     if sample_size:
         dataset = dataset.select(range(sample_size))
+    sample_size = len(dataset)
 
     references = []
     predictions = []
@@ -90,7 +98,7 @@ def run_wav2vec2(config):
     metrics = evaluate_asr(predictions, references)
 
     result = {
-        "Rank": "",  # Will be recalculated
+        "Rank": "",
         "Model Name": model_name,
         "WER (%)": round(metrics["wer"] * 100, 2),
         "CER (%)": round(metrics["cer"] * 100, 2),
@@ -99,7 +107,9 @@ def run_wav2vec2(config):
         "Sample Size": sample_size,
         "# Params (M)": round(model.num_parameters() / 1e6, 2),
         "Hugging Face Link": f"https://huggingface.co/{model_name}",
+        "Hardware Info": hardware_info,
         "Last Updated": str(date.today()),
         "Notes": config.get("notes", ""),
     }
+
     return result
