@@ -1,0 +1,6 @@
+model_runner: run_whisper
+model_name: MohammadGholizadeh/whisper-large-v3-persian-common-voice-17
+dataset: hsekhalilian/fleurs
+split: validation
+language: persian
+# sample_size: 100
