@@ -97,3 +97,22 @@ def update_leaderboard(entry: dict, csv_path: str = "leaderboard.csv") -> None:
     # Save updated leaderboard
     df.to_csv(csv_path, index=False)
     print(f"📊 Leaderboard saved: {csv_path}")
+
+    # Get the updated or inserted row as a dictionary
+    mask = pd.Series([True] * len(df))
+    for col in key_cols:
+        mask &= df[col] == entry[col]
+        if mask.any():
+            matched_row = df.loc[mask].iloc[0].to_dict()
+
+    display_keys = [
+        "Rank",
+        "Model Name",
+        "WER (%)",
+        "Inference Time (s)",
+        "Dataset Used",
+        "Hardware Info",
+    ]
+    print("\n📌 Resulting Entry Summary:")
+    for key in display_keys:
+        print(f"{key}: {matched_row.get(key, 'N/A')}")
