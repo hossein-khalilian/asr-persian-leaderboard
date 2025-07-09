@@ -1,11 +1,12 @@
 import logging
 import time
+import warnings
 from datetime import date
 
 import torch
 from datasets import load_dataset
 from tqdm import tqdm
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
+from transformers import Wav2Vec2Config, Wav2Vec2ForCTC, Wav2Vec2Processor
 
 from utils.evaluate import evaluate_asr
 
@@ -49,8 +50,20 @@ def run_wav2vec2(config):
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     logger.info(f"Loading model {model_name} on {device}...")
-    processor = Wav2Vec2Processor.from_pretrained(model_name_or_path)
-    model = Wav2Vec2ForCTC.from_pretrained(model_name_or_path).to(device)
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message="Passing `gradient_checkpointing` to a config initialization.*",
+        )
+        model_config = Wav2Vec2Config.from_pretrained(model_name_or_path)
+        processor = Wav2Vec2Processor.from_pretrained(model_name_or_path)
+        if hasattr(model_config, "gradient_checkpointing"):
+            del model_config.gradient_checkpointing
+
+    model = Wav2Vec2ForCTC.from_pretrained(model_name_or_path, config=model_config)
+    model = model.to(device)
+    model.gradient_checkpointing_disable()
     model.eval()
 
     # Load dataset
