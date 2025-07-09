@@ -91,7 +91,8 @@ def run_wav2vec2(config):
         predicted_ids = torch.argmax(logits, dim=-1)
         transcription = processor.decode(predicted_ids[0])
 
-        references.append(sample["sentence"].lower().strip())
+        ref = sample.get("normalized_transcription") or sample.get("sentence") or ""
+        references.append(ref.lower().strip())
         predictions.append(transcription)
 
     elapsed_time = time.time() - start_time
