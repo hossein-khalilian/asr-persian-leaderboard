@@ -56,7 +56,8 @@ def run_whisper(config):
     model = AutoModelForSpeechSeq2Seq.from_pretrained(
         model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
     ).to(device)
-    del model.generation_config.forced_decoder_ids
+    # if hasattr(model.generation_config, "forced_decoder_ids"):
+    #     del model.generation_config.forced_decoder_ids
 
     processor = AutoProcessor.from_pretrained(model_id)
 
@@ -67,6 +68,7 @@ def run_whisper(config):
         feature_extractor=processor.feature_extractor,
         torch_dtype=torch_dtype,
         device=device,
+        chunk_length_s=30,
     )
 
     # Load dataset
@@ -84,7 +86,10 @@ def run_whisper(config):
     for sample in tqdm(dataset):
         result = pipe(
             sample["audio"],
-            generate_kwargs={"task": "transcribe", "language": language},
+            generate_kwargs={
+                # "task": "transcribe",
+                # "language": language,
+            },
         )
         predictions.append(result["text"])
         ref = sample.get("normalized_transcription") or sample.get("sentence") or ""
