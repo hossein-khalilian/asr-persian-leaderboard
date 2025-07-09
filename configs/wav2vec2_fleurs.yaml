@@ -1,0 +1,5 @@
+model_runner: run_wav2vec2
+model_name: ghofrani/xls-r-1b-fa-cv8
+dataset: hsekhalilian/fleurs
+split: validation
+notes: "mehrdad zeroshot model"
