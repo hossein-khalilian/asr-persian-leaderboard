@@ -1,5 +1,5 @@
 model_runner: run_whisper
-model_name: openai/whisper-tiny
+model_name: MohammadGholizadeh/whisper-large-v3-persian-common-voice-17
 dataset: hsekhalilian/commonvoice
 split: dev
 language: persian

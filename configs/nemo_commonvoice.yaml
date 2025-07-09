@@ -1,0 +1,5 @@
+model_runner: run_nemo
+model_name: nvidia/stt_fa_fastconformer_hybrid_large
+dataset: hsekhalilian/commonvoice
+split: dev
+sample_size: 1000
