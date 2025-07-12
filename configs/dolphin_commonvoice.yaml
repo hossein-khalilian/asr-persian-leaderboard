@@ -1,0 +1,5 @@
+model_runner: run_dolphin
+model_name: DataoceanAI/dolphin-small
+dataset: hsekhalilian/commonvoice
+split: dev
+sample_size: 100

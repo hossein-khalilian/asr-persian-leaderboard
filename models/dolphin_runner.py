@@ -3,8 +3,10 @@ import logging
 import time
 from datetime import date
 
+import dolphin
 import torch
-from nemo.collections.asr.models import EncDecHybridRNNTCTCBPEModel
+from huggingface_hub import snapshot_download
+from tqdm import tqdm
 
 from utils.create_dataset import create_nemo_dataset
 from utils.evaluate import evaluate_asr
@@ -15,12 +17,11 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
-logging.getLogger("nemo_logger").setLevel(logging.CRITICAL)
 
 
-def run_nemo(config):
+def run_dolphin(config):
     """
-    Run NeMo ASR on a dataset split according to config.
+    Run Dolphin ASR on a dataset split according to config.
     Returns dict with metrics and info.
 
     config keys:
@@ -28,7 +29,7 @@ def run_nemo(config):
       - dataset (str): dataset name (e.g. "common_voice")
       - subset (str): dataset subset (e.g. "fa")
       - split (str): dataset split (e.g. "test[:20]")
-      - language (str): language id for Nemo
+      - language (str): language id for Dolphin
     """
     if torch.cuda.is_available():
         gpu_name = torch.cuda.get_device_name(0)
@@ -41,15 +42,15 @@ def run_nemo(config):
     model_name = config["model_name"]
 
     logger.info(f"Loading model {model_name} on {device}...")
-    asr_model = EncDecHybridRNNTCTCBPEModel.from_pretrained(model_name=model_name)
-    asr_model = asr_model.to(device)
-    asr_model.eval()
+    model_dir = snapshot_download(repo_id=model_name)
+    model = dolphin.load_model(model_name.split("dolphin-")[-1], model_dir, device)
 
     # Load dataset
     manifest_path = create_nemo_dataset(config)
+
+    audio_files = []
     references = []
     predictions = []
-    audio_files = []
 
     with open(manifest_path, "r", encoding="utf-8") as f:
         for line in f:
@@ -60,8 +61,10 @@ def run_nemo(config):
     logger.info(f"Running inference on {len(audio_files)} samples...")
     start_time = time.time()
 
-    results = asr_model.transcribe(audio_files)
-    predictions = [result.text for result in results]
+    for audio_file in tqdm(audio_files):
+        waveform = dolphin.load_audio(audio_file)
+        result = model(waveform, lang_sym="fa", region_sym="IR")
+        predictions.append(result.text_nospecial)
 
     elapsed_time = time.time() - start_time
     metrics = evaluate_asr(predictions, references)
@@ -74,7 +77,9 @@ def run_nemo(config):
         "Inference Time (s)": round(elapsed_time, 2),
         "Dataset Used": f"{config.get('dataset')} {config.get('split')}".strip(),
         "Sample Size": len(audio_files),
-        "# Params (M)": round(asr_model.num_weights / 1e6, 2),
+        "# Params (M)": round(
+            sum(p.numel() for p in model.s2t_model.parameters()) / 1e6, 2
+        ),
         "Hugging Face Link": f"https://huggingface.co/{model_name}",
         "Hardware Info": hardware_info,
         "Last Updated": str(date.today()),

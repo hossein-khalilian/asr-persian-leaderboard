@@ -2,6 +2,7 @@ import argparse
 
 import yaml
 
+from models.dolphin_runner import run_dolphin
 from models.dummy_runner import run_dummy
 from models.nemo_runner import run_nemo
 from models.wav2vec2_runner import run_wav2vec2
@@ -13,6 +14,7 @@ RUNNERS = {
     "run_wav2vec2": run_wav2vec2,
     "run_whisper": run_whisper,
     "run_nemo": run_nemo,
+    "run_dolphin": run_dolphin,
 }
 
 
