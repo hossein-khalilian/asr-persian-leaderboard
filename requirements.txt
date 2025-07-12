@@ -1,4 +1,4 @@
---extra-index-url https://download.pytorch.org/whl/cu128
+#--extra-index-url https://download.pytorch.org/whl/cu128
 torch
 torchaudio
 
@@ -14,4 +14,4 @@ accelerate
 num2fawords
 parsivar
 pandas
-nemo_toolkit[asr]
+# nemo_toolkit[asr]
