@@ -14,4 +14,4 @@ accelerate
 num2fawords
 parsivar
 pandas
-nemo_toolkit['asr']
+nemo_toolkit[asr]
