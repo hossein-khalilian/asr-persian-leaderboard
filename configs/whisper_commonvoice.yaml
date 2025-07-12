@@ -1,6 +1,6 @@
-model_runner: run_whisper
-model_name: MohammadGholizadeh/whisper-large-v3-persian-common-voice-17
+model_runner: models.whisper_runner.run_whisper
+model_name: steja/whisper-large-persian
 dataset: hsekhalilian/commonvoice
 split: dev
 language: persian
-sample_size: 1000
+sample_size: 100

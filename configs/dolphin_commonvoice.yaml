@@ -1,4 +1,4 @@
-model_runner: run_dolphin
+model_runner: models.dolphin_runner.run_dolphin
 model_name: DataoceanAI/dolphin-small
 dataset: hsekhalilian/commonvoice
 split: dev
