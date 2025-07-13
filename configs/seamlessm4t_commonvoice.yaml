@@ -1,0 +1,7 @@
+model_runner: models.seamless_runner.run_seamless_batched
+model_name: facebook/seamless-m4t-v2-large
+dataset: hsekhalilian/commonvoice
+split: dev
+language: persian
+sample_size: 1000
+batch_size: 20
