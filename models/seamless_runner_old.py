@@ -4,7 +4,8 @@ import time
 from datetime import date
 
 import torch
-from nemo.collections.asr.models import EncDecHybridRNNTCTCBPEModel
+from seamless_communication.inference import Translator
+from tqdm import tqdm
 
 from utils.create_dataset import create_nemo_dataset
 from utils.evaluate import evaluate_asr
@@ -18,9 +19,9 @@ logger = logging.getLogger(__name__)
 logging.getLogger("nemo_logger").setLevel(logging.CRITICAL)
 
 
-def run_nemo(config):
+def run_seamless(config):
     """
-    Run NeMo ASR on a dataset split according to config.
+    Run SeamlessM4T ASR on a dataset split according to config.
     Returns dict with metrics and info.
 
     config keys:
@@ -28,7 +29,7 @@ def run_nemo(config):
       - dataset (str): dataset name (e.g. "common_voice")
       - subset (str): dataset subset (e.g. "fa")
       - split (str): dataset split (e.g. "test[:20]")
-      - language (str): language id for Nemo
+      - language (str): language id for SeamlessM4T
     """
     if torch.cuda.is_available():
         gpu_name = torch.cuda.get_device_name(0)
@@ -41,9 +42,12 @@ def run_nemo(config):
     model_name = config["model_name"]
 
     logger.info(f"Loading model {model_name} on {device}...")
-    asr_model = EncDecHybridRNNTCTCBPEModel.from_pretrained(model_name=model_name)
-    asr_model = asr_model.to(device)
-    asr_model.eval()
+    translator = Translator(
+        model_name_or_card="seamlessM4T_large",
+        vocoder_name_or_card="vocoder_36langs",
+        device=torch.device("cuda:0"),
+        dtype=torch.float32,
+    )
 
     # Load dataset
     manifest_path = create_nemo_dataset(config)
@@ -60,8 +64,13 @@ def run_nemo(config):
     logger.info(f"Running inference on {len(audio_files)} samples...")
     start_time = time.time()
 
-    results = asr_model.transcribe(audio_files)
-    predictions = [result.text for result in results]
+    for audio_file in tqdm(audio_files):
+        transcription, _ = translator.predict(
+            input=audio_file,
+            task_str="ASR",
+            tgt_lang="pes",
+        )
+        predictions.append(str(transcription[0]))
 
     elapsed_time = time.time() - start_time
     metrics = evaluate_asr(references, predictions)
@@ -74,7 +83,7 @@ def run_nemo(config):
         "Inference Time (s)": round(elapsed_time, 2),
         "Dataset Used": f"{config.get('dataset')} {config.get('split')}".strip(),
         "Sample Size": len(audio_files),
-        "# Params (M)": round(asr_model.num_weights / 1e6, 2),
+        "# Params (M)": round(sum(p.numel() for p in translator.parameters()) / 1e6, 2),
         "Hugging Face Link": f"https://huggingface.co/{model_name}",
         "Hardware Info": hardware_info,
         "Last Updated": str(date.today()),

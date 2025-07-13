@@ -109,7 +109,7 @@ def run_wav2vec2(config):
         predictions.append(transcription)
 
     elapsed_time = time.time() - start_time
-    metrics = evaluate_asr(predictions, references)
+    metrics = evaluate_asr(references, predictions)
 
     result = {
         "Rank": "",

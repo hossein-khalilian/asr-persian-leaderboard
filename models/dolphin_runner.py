@@ -67,7 +67,7 @@ def run_dolphin(config):
         predictions.append(result.text_nospecial)
 
     elapsed_time = time.time() - start_time
-    metrics = evaluate_asr(predictions, references)
+    metrics = evaluate_asr(references, predictions)
 
     result = {
         "Rank": "",

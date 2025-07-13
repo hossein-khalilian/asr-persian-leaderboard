@@ -97,7 +97,7 @@ def run_whisper(config):
 
     elapsed_time = time.time() - start_time
 
-    metrics = evaluate_asr(predictions, references)
+    metrics = evaluate_asr(references, predictions)
 
     result = {
         "Rank": "",
