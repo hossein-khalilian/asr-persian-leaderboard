@@ -11,11 +11,10 @@ from transformers import AutoProcessor, SeamlessM4Tv2ForSpeechToText
 
 from utils.evaluate import evaluate_asr
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[logging.StreamHandler()],
-)
+# Enable CUDNN auto-tuner
+torch.backends.cudnn.benchmark = True
+torch.set_num_threads(4)  # Adjust if CPU-bound
+
 logger = logging.getLogger(__name__)
 
 
@@ -162,7 +161,12 @@ def run_seamless_batched(config):
         return speech_arrays, sentences
 
     loader = DataLoader(
-        dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        collate_fn=collate_fn,
+        num_workers=2,
+        pin_memory=True,
     )
 
     references = []
@@ -173,19 +177,22 @@ def run_seamless_batched(config):
     )
     start_time = time.time()
 
-    for speech_arrays, sentences in tqdm(loader):
-        audio_inputs = processor(
-            audios=speech_arrays,
-            return_tensors="pt",
-            sampling_rate=TARGET_SAMPLING_RATE,
-            padding=True,
-        ).to(device)
+    with torch.inference_mode():
+        for speech_arrays, sentences in tqdm(loader):
+            audio_inputs = processor(
+                audios=speech_arrays,
+                return_tensors="pt",
+                sampling_rate=TARGET_SAMPLING_RATE,
+                padding=True,
+            ).to(device)
 
-        output_tokens = model.generate(**audio_inputs, tgt_lang="pes")
-        transcriptions = processor.batch_decode(output_tokens, skip_special_tokens=True)
+            output_tokens = model.generate(**audio_inputs, tgt_lang="pes")
+            transcriptions = processor.batch_decode(
+                output_tokens, skip_special_tokens=True
+            )
 
-        references.extend(sentences)
-        predictions.extend(transcriptions)
+            references.extend(sentences)
+            predictions.extend(transcriptions)
 
     elapsed_time = time.time() - start_time
     metrics = evaluate_asr(references, predictions)

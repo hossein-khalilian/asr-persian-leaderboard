@@ -1,5 +1,5 @@
 model_runner: models.seamless_runner.run_seamless_batched
-model_name: facebook/seamless-m4t-v2-large
+model_name: facebook/seamless-m4t-medium
 dataset: hsekhalilian/fleurs
 split: validation
 language: persian
