@@ -15,3 +15,4 @@ num2fawords==1.1
 parsivar==0.2.3.1
 pandas==2.3.1
 nemo_toolkit[asr]==2.2.1
+evaluate
