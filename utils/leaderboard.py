@@ -95,7 +95,7 @@ def update_leaderboard(entry: dict, csv_path: str = "leaderboard.csv") -> None:
     df = df.drop_duplicates(ignore_index=True)
 
     # Save updated leaderboard
-    df.to_csv(csv_path, index=False)
+    df.drop("Rank", axis=1).to_csv(csv_path, index=False)
     print(f"📊 Leaderboard saved: {csv_path}")
 
     # Get the updated or inserted row as a dictionary
@@ -109,6 +109,7 @@ def update_leaderboard(entry: dict, csv_path: str = "leaderboard.csv") -> None:
         "Rank",
         "Model Name",
         "WER (%)",
+        "CER (%)",
         "Inference Time (s)",
         "Dataset Used",
         "Hardware Info",
