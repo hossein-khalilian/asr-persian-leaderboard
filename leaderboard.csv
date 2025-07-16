@@ -62,6 +62,7 @@ openai/whisper-small,77.92,41.78,6m 20s,hsekhalilian/commonvoice dev,1000,241.73
 openai/whisper-base,95.75,59.09,6m 18s,hsekhalilian/commonvoice dev,1000,72.59,https://huggingface.co/openai/whisper-base,2025-07-08,,NVIDIA GeForce RTX 4060 Ti (CUDA 12.6)
 openai/whisper-base,98.45,73.44,30s,hsekhalilian/commonvoice dev,100,72.59,https://huggingface.co/openai/whisper-base,2025-07-08,,NVIDIA GeForce RTX 4060 Ti (CUDA 12.6)
 facebook/mms-1b-all,102.63,84.6,45s,hsekhalilian/commonvoice dev,1000,964.85,https://huggingface.co/facebook/mms-1b-all,2025-07-14,,NVIDIA GeForce RTX 3090 (CUDA 12.6)
+facebook/mms-1b-all,102.63,84.6,1m 16s,hsekhalilian/commonvoice dev,1000,964.85,https://huggingface.co/facebook/mms-1b-all,2025-07-16,,NVIDIA GeForce RTX 4090 (CUDA 12.8)
 openai/whisper-small,104.43,97.43,27s,hsekhalilian/commonvoice dev,100,241.73,https://huggingface.co/openai/whisper-small,2025-07-08,Zero-shot Persian,NVIDIA GeForce RTX 4060 Ti (CUDA 12.6)
 distil-whisper/distil-large-v3,117.89,109.38,3m 23s,hsekhalilian/commonvoice dev,1000,756.41,https://huggingface.co/distil-whisper/distil-large-v3,2025-07-09,,NVIDIA GeForce RTX 4060 Ti (CUDA 12.8)
 distil-whisper/distil-large-v3.5,131.01,115.65,2m 24s,hsekhalilian/commonvoice dev,1000,756.41,https://huggingface.co/distil-whisper/distil-large-v3.5,2025-07-09,,NVIDIA GeForce RTX 4060 Ti (CUDA 12.8)

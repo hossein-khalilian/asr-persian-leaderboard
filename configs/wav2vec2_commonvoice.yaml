@@ -1,5 +1,5 @@
 model_runner: models.wav2vec2_runner.run_wav2vec2
-model_name: hsekhalilian/wav2vec2-custom-model
+model_name: facebook/mms-1b-all
 dataset: hsekhalilian/commonvoice
 split: dev
 sample_size: 1000
