@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import time
 from datetime import date
 
@@ -38,10 +39,20 @@ def run_nemo(config):
         hardware_info = "CPU only"
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model_name = config["model_name"]
+    model_name = config["model_name_or_path"]
 
-    logger.info(f"Loading model {model_name} on {device}...")
-    asr_model = EncDecHybridRNNTCTCBPEModel.from_pretrained(model_name=model_name)
+    is_local = os.path.isdir(model_name) or os.path.isfile(model_name)
+    model_display_name = (
+        os.path.basename(model_name.rstrip("/")) if is_local else model_name
+    )
+
+    logger.info(f"Loading model {model_display_name} on {device}...")
+
+    if not is_local:
+        asr_model = EncDecHybridRNNTCTCBPEModel.from_pretrained(model_name=model_name)
+    else:
+        asr_model = EncDecHybridRNNTCTCBPEModel.restore_from(model_name)
+
     asr_model = asr_model.to(device)
     asr_model.eval()
 
@@ -68,7 +79,7 @@ def run_nemo(config):
 
     result = {
         "Rank": "",
-        "Model Name": model_name,
+        "Model Name": model_display_name,
         "WER (%)": round(metrics["wer"] * 100, 2),
         "CER (%)": round(metrics["cer"] * 100, 2),
         "Inference Time (s)": round(elapsed_time, 2),
