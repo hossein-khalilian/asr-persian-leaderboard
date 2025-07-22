@@ -57,6 +57,7 @@ def create_nemo_dataset(config: Dict) -> Path:
     output_dir = (
         Path.home()
         / ".cache"
+        / "asr-persian-leaderboard"
         / "datasets"
         / dataset_name.replace("/", "___")
         / "audio_files"
