@@ -39,7 +39,7 @@ def run_nemo(config):
         hardware_info = "CPU only"
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model_name = config["model_name_or_path"]
+    model_name = config["model_name"]
 
     is_local = os.path.isdir(model_name) or os.path.isfile(model_name)
     model_display_name = (

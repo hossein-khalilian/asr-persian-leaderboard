@@ -62,7 +62,7 @@ def create_nemo_dataset(config: Dict) -> Path:
         / dataset_name.replace("/", "___")
         / "audio_files"
     )
-    manifest_path = output_dir.parent / f"{split}_manifest.json"
+    manifest_path = output_dir.parent / "manifests" / f"{split}_manifest.json"
 
     # Load dataset to determine expected length
     dataset = load_dataset(dataset_name, split=split)
