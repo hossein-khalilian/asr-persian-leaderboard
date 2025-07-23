@@ -1,4 +1,4 @@
 model_runner: models.nemo_runner.run_nemo
-model_name: /home/user/.cache/nemo_experiments/Speech_To_Text_Finetuning/2025-07-22_06-58-20/checkpoints/Speech_To_Text_Finetuning.nemo
+model_name: hsekhalilian/Speech_To_Text_Finetuning_01
 dataset: hsekhalilian/fleurs
 split: validation

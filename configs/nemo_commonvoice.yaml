@@ -1,5 +1,5 @@
 model_runner: models.nemo_runner.run_nemo
-model_name: hsekhalilian/speech-to-text-rnnt-finetuned
+model_name: hsekhalilian/Speech_To_Text_Finetuning_02
 dataset: hsekhalilian/sorted_commonvoice
 split: dev
 sample_size: 1000
