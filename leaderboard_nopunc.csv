@@ -1,0 +1,6 @@
+Model Name,WER (%),CER (%),Inference Time (s),Dataset Used,Sample Size,# Params (M),Hugging Face Link,Hardware Info,Last Updated,Notes
+nvidia/stt_fa_fastconformer_hybrid_large,9.5,2.99,22s,hsekhalilian/sorted_commonvoice dev,1000,114.62,https://huggingface.co/nvidia/stt_fa_fastconformer_hybrid_large,NVIDIA GeForce RTX 4060 Ti (CUDA 12.8),2025-07-28,
+hsekhalilian/Speech_To_Text_Finetuning_03_no_punc_with_encoder,9.98,2.99,19s,hsekhalilian/sorted_commonvoice dev,1000,114.62,https://huggingface.co/hsekhalilian/Speech_To_Text_Finetuning_03_no_punc_with_encoder,NVIDIA GeForce RTX 4060 Ti (CUDA 12.8),2025-07-28,
+hsekhalilian/stt_fa_fastconformer_updated_tokenizer_01,10.78,3.25,21s,hsekhalilian/sorted_commonvoice dev,1000,114.62,https://huggingface.co/hsekhalilian/stt_fa_fastconformer_updated_tokenizer_01,NVIDIA GeForce RTX 4060 Ti (CUDA 12.8),2025-07-28,
+hsekhalilian/Speech_To_Text_Finetuning_03,13.15,4.25,21s,hsekhalilian/sorted_commonvoice dev,1000,114.62,https://huggingface.co/hsekhalilian/Speech_To_Text_Finetuning_03,NVIDIA GeForce RTX 4060 Ti (CUDA 12.8),2025-07-28,
+hsekhalilian/Speech_To_Text_Finetuning_02,22.57,6.86,1m 39s,hsekhalilian/sorted_commonvoice dev,1000,114.62,https://huggingface.co/hsekhalilian/Speech_To_Text_Finetuning_02,CPU only,2025-07-28,
