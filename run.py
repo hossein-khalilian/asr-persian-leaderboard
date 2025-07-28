@@ -1,9 +1,13 @@
 import argparse
 import importlib
+import os
 
 import yaml
+from dotenv import load_dotenv
 
 from utils.leaderboard import update_leaderboard
+
+load_dotenv()
 
 
 def load_config(config_path):
@@ -36,7 +40,10 @@ def main(config_path):
     benchmark_function = import_runner(runner_name)
     result = benchmark_function(config)
 
-    update_leaderboard(result)
+    if bool(os.environ.get("no_punctuation")):
+        update_leaderboard(result, csv_path="leaderboard_nopunc.csv")
+    else:
+        update_leaderboard(result, csv_path="leaderboard.csv")
 
 
 if __name__ == "__main__":
