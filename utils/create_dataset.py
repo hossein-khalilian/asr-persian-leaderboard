@@ -5,6 +5,7 @@ from typing import Dict
 import torch
 import torchaudio
 from datasets import load_dataset
+from text_normalizer.persian_normalizer import persian_normalizer_no_punc
 from tqdm import tqdm
 
 TARGET_SAMPLING_RATE = 16000
@@ -27,16 +28,24 @@ def save_audio(waveform: torch.Tensor, sr: int, path: Path) -> None:
 
 
 def process_sample(sample: Dict, output_dir: Path) -> Dict:
-    text = sample["normalized_transcription"]
-    audio_info = sample["audio"]
+    text = (
+        sample.get("text")
+        or sample.get("sentence")
+        or sample.get("raw_transcription")
+        or sample.get("transcription")
+        or sample.get("normalized_transcription")
+    )
+    text = persian_normalizer_no_punc(text)
 
+    audio_info = sample["audio"]
     audio_filename = Path(audio_info["path"]).name
-    output_audio_path = output_dir / audio_filename
+    output_audio_path = output_dir / "audio_files" / audio_filename
 
     waveform = torch.tensor(audio_info["array"]).unsqueeze(0)
     sr = audio_info["sampling_rate"]
 
-    waveform = resample_audio(waveform, sr, TARGET_SAMPLING_RATE)
+    if sr != TARGET_SAMPLING_RATE:
+        waveform = resample_audio(waveform, sr, TARGET_SAMPLING_RATE)
 
     save_audio(waveform, TARGET_SAMPLING_RATE, output_audio_path)
 
