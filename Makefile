@@ -9,6 +9,4 @@ submit:
 	@echo "Evaluating model: $(model_name) with type: $(model_type)"
 	python run.py configs/$(model_type)_fleurs.yaml --model_name=$(model_name)
 	python run.py configs/$(model_type)_commonvoice.yaml --model_name=$(model_name)
-	@echo "Updating leaderboard..."
-	python scripts/update_leaderboard.py --model_name=$(model_name) --model_type=$(model_type)
 
