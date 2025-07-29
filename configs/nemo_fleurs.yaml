@@ -1,4 +1,4 @@
 model_runner: models.nemo_runner.run_nemo
-model_name: hsekhalilian/speech-to-text-rnnt-finetuned
+model_name: ???
 dataset: hsekhalilian/fleurs
 split: validation
