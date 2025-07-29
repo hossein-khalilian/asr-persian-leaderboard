@@ -70,19 +70,6 @@ def update_leaderboard(entry: dict, csv_path: str = "leaderboard.csv") -> None:
             entry["Inference Time (s)"] = format_duration(new_time_numeric)
             df.loc[idx] = entry
 
-        # for col in df.columns:
-        #         val = entry[col]
-        #         # Handle NaNs and convert to proper type
-        #         if pd.api.types.is_numeric_dtype(df[col]):
-        #             if val in ("", None):
-        #                 val = pd.NA
-        #             else:
-        #                 try:
-        #                     val = float(val)
-        #                 except (ValueError, TypeError):
-        #                     val = pd.NA
-        #         df.at[idx, col] = val
-
         else:
             print("⚠️ Existing entry is better or equal — skipping update.")
             return

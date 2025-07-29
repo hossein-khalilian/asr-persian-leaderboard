@@ -30,7 +30,7 @@ def main(config_path, model_name_override=None):
 
     csv_name = (
         "leaderboards/leaderboard_nopunc.csv"
-        if os.environ.get("no_punctuation")
+        if os.environ.get("no_punctuation").lower() == "true"
         else "leaderboards/leaderboard.csv"
     )
     update_leaderboard(result, csv_path=csv_name)

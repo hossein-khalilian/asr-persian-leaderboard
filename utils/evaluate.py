@@ -16,7 +16,7 @@ def evaluate_asr(reference: list[str], hypothesis: list[str]) -> dict:
     Compute WER and CER using the jiwer library after applying Persian normalization.
     """
 
-    if bool(os.environ.get("no_punctuation")):
+    if os.environ.get("no_punctuation").lower() == "true":
         reference_normalized = [
             normalize_persian_halfspace(persian_normalizer_no_punc(ref))
             for ref in reference
