@@ -104,7 +104,14 @@ def run_wav2vec2(config):
         predicted_ids = torch.argmax(logits, dim=-1)
         transcription = processor.decode(predicted_ids[0])
 
-        ref = sample.get("normalized_transcription") or sample.get("sentence") or ""
+        ref = (
+            sample.get("text")
+            or sample.get("sentence")
+            or sample.get("raw_transcription")
+            or sample.get("transcription")
+            or sample.get("normalized_transcription")
+        )
+
         references.append(ref.lower().strip())
         predictions.append(transcription)
 

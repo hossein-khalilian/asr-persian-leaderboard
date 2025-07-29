@@ -14,11 +14,11 @@ def run_dummy(config):
     result = {
         "Rank": "",  # Will be recalculated
         "Model Name": "dummy_model",
-        "WER (%)": 6.1,
+        "WER (%)": 4.8,
         "CER (%)": 3.8,
-        "Inference Time (s)": 95,
+        "Inference Time (s)": 93,
         "Dataset Used": "Common Voice (Persian)",
-        "Sample Size": 0,
+        "Sample Size": 20,
         "# Params (M)": 244,
         "Hardware Info": hardware_info,
         "Hugging Face Link": "https://huggingface.co/dummy/model",
