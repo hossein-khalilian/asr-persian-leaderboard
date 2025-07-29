@@ -3,4 +3,4 @@ model_name: ???
 dataset: hsekhalilian/fleurs
 split: validation
 language: persian
-batch_size: 5
+batch_size: 8
