@@ -29,9 +29,9 @@ def main(config_path, model_name_override=None):
     result = benchmark_function(cfg)
 
     csv_name = (
-        "leaderboard_nopunc.csv"
+        "leaderboards/leaderboard_nopunc.csv"
         if os.environ.get("no_punctuation")
-        else "leaderboard.csv"
+        else "leaderboards/leaderboard.csv"
     )
     update_leaderboard(result, csv_path=csv_name)
 
