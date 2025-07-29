@@ -1,6 +1,5 @@
 model_runner: models.whisper_runner.run_whisper
-model_name: steja/whisper-large-persian
+model_name: ???
 dataset: hsekhalilian/fleurs
 split: validation
 language: persian
-# sample_size: 100
