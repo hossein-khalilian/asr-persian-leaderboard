@@ -3,13 +3,15 @@ import re
 import pkg_resources
 
 # Input and output file (same in this case)
-filename = "../requirements.txt"
+filename = "./requirements.txt"
 
 
 def get_installed_version(pkg_name):
     try:
         return pkg_resources.get_distribution(pkg_name).version
     except pkg_resources.DistributionNotFound:
+        return None
+    except pkg_resources.RequirementParseError:
         return None
 
 
@@ -18,13 +20,23 @@ def extract_base_package(package):
     return re.split(r"[<=>\[ ]", package)[0]
 
 
+def should_skip_line(line):
+    stripped = line.strip()
+    return (
+        not stripped
+        or stripped.startswith("#")
+        or stripped.startswith("--")
+        or stripped.startswith("git+")
+        or "://" in stripped  # skip URLs
+    )
+
+
 updated_lines = []
 with open(filename, "r") as file:
     for line in file:
         stripped = line.strip()
 
-        # Skip empty lines or comments
-        if not stripped or stripped.startswith("#"):
+        if should_skip_line(stripped):
             updated_lines.append(line)
             continue
 
@@ -33,12 +45,11 @@ with open(filename, "r") as file:
             updated_lines.append(line)
             continue
 
-        # Extract package name (handle extras like datasets[audio])
         base_pkg = extract_base_package(stripped)
         version = get_installed_version(base_pkg)
 
         if version:
-            # Insert version with original formatting
+            # Keep extras if present
             if "[" in stripped:
                 extras = stripped[stripped.index("[") :]
                 updated_line = f"{base_pkg}{extras}=={version}\n"
@@ -49,7 +60,6 @@ with open(filename, "r") as file:
             print(f"⚠️ Package '{base_pkg}' not found in environment. Keeping as-is.")
             updated_lines.append(line)
 
-# Save updated requirements
 with open(filename, "w") as file:
     file.writelines(updated_lines)
 
