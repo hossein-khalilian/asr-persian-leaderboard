@@ -33,7 +33,7 @@ models=(
     "seamless:facebook/seamless-m4t-v2-large"
     "whisper:MohammadGholizadeh/whisper-large-v3-persian-common-voice-17"
     "whisper:MohammadKhosravi/whisper-large-v3-Persian"
-    "whisper:Neurai/NeuraSpeech_900h"
+    "nemo:Neurai/NeuraSpeech_900h"
     "whisper:Neurai/NeuraSpeech_WhisperBase"
     "whisper:openai/whisper-base"
     "whisper:openai/whisper-large"
@@ -45,6 +45,10 @@ models=(
     "whisper:steja/whisper-large-persian"
     "whisper:distil-whisper/distil-large-v3"
     "whisper:distil-whisper/distil-large-v3.5"
+)
+
+models=(
+  "nemo:Neurai/NeuraSpeech_900h" 
 )
 
 for entry in "${models[@]}"; do
