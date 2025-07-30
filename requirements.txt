@@ -23,5 +23,6 @@ setuptools==80.9.0
 cuda-python>=12.3
 python-dotenv
 hydra-core
+seaborn
 
 git+https://github.com/hossein-khalilian/text_normalizer.git
