@@ -12,7 +12,6 @@ tqdm==4.67.1
 ipython==8.37.0
 accelerate==1.8.1
 num2fawords==1.1
-parsivar==0.2.3.1
 pandas==2.3.1
 
 nemo_toolkit[asr]==2.3.2

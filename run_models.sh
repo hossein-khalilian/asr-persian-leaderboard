@@ -47,9 +47,6 @@ models=(
     "whisper:distil-whisper/distil-large-v3.5"
 )
 
-models=(
-  "nemo:Neurai/NeuraSpeech_900h" 
-)
 
 for entry in "${models[@]}"; do
   IFS=":" read -r model_type model_name <<< "$entry"
